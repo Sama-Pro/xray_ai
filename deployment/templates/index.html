@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>X-Ray AI Detector</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+</head>
+<body>
+
+<div class="container">
+    <h1>🩻 X-Ray Pneumonia Detector</h1>
+
+    <input type="file" id="imageInput" accept="image/*">
+    <br><br>
+
+    <button onclick="predict()">Predict</button>
+
+    <h2 id="result"></h2>
+    <p id="confidence"></p>
+
+    <img id="preview" />
+</div>
+
+<script src="{{ url_for('static', filename='script.js') }}"></script>
+</body>
+</html>
+
+
