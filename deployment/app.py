@@ -7,9 +7,8 @@ from flask_cors import CORS
 import gdown
 
 # -----------------------------
-# APP CONFIG (IMPORTANT CHANGE)
+# APP CONFIG
 # -----------------------------
-
 app = Flask(
     __name__,
     template_folder="templates",
@@ -24,30 +23,34 @@ CORS(app)
 PORT = int(os.environ.get("PORT", 5000))
 
 # -----------------------------
-# PATHS
+# MODEL CONFIG
 # -----------------------------
-
-FILE_ID = "1vS4pW28z1sr7gj4b_lF10GU1L51D4-nC"  
+FILE_ID = "1KffooXUkliBRSoOiog3PAA-WUtEOHqt2"  # ✅ YOUR CORRECT FILE ID
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-MODEL_PATH = os.path.join(BASE_DIR, "model", "xray_model.h5")
+MODEL_PATH = os.path.join(BASE_DIR, "model", "best_model.h5")
 
+# -----------------------------
+# DOWNLOAD MODEL IF NOT EXISTS
+# -----------------------------
 if not os.path.exists(MODEL_PATH):
-    print("📥 Downloading model...")
-    url = f"https://drive.google.com/uc?id={FILE_ID}"
+    print("📥 Downloading model from Google Drive...")
     os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
-    gdown.download(url, MODEL_PATH, quiet=False)
 
-# -----------------------------
-# LOAD MODEL
-# -----------------------------
+    url = f"https://drive.google.com/uc?id={FILE_ID}"
+    gdown.download(url, MODEL_PATH, quiet=False, fuzzy=True)
+
+print("📦 Loading model...")
 model = tf.keras.models.load_model(MODEL_PATH, compile=False)
 print("✅ Model loaded successfully")
 
+# -----------------------------
+# SETTINGS
+# -----------------------------
 IMG_SIZE = (150, 150)
 labels = ["NORMAL", "PNEUMONIA"]
 
 # -----------------------------
-# PREPROCESS
+# PREPROCESS FUNCTION
 # -----------------------------
 def preprocess_image(image):
     image = image.resize(IMG_SIZE)
@@ -74,12 +77,12 @@ def predict():
         processed = preprocess_image(img)
         prediction = model.predict(processed)[0][0]
 
-        confidence = prediction if prediction > 0.5 else (1 - prediction)
+        confidence = float(prediction if prediction > 0.5 else (1 - prediction))
         result = labels[1] if prediction > 0.5 else labels[0]
 
         return jsonify({
             "prediction": result,
-            "confidence": float(confidence)
+            "confidence": confidence
         })
 
     except Exception as e:
@@ -89,4 +92,5 @@ def predict():
 # RUN SERVER
 # -----------------------------
 if __name__ == "__main__":
+    print("🚀 Starting Flask server...")
     app.run(host="0.0.0.0", port=PORT)
