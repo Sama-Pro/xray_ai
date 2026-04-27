@@ -28,7 +28,8 @@ PORT = int(os.environ.get("PORT", 5000))
 # -----------------------------
 
 FILE_ID = "1vS4pW28z1sr7gj4b_lF10GU1L51D4-nC"  
-MODEL_PATH = os.path.join(BASE_DIR, "..", "model", "xray_model.h5")
+BASE_DIR = os.path.dirname(os.path.abspath(__file__))
+MODEL_PATH = os.path.join(BASE_DIR, "model", "xray_model.h5")
 
 if not os.path.exists(MODEL_PATH):
     print("📥 Downloading model...")
