@@ -1,9 +1,7 @@
 flask
 flask-cors
 gunicorn
-tensorflow==2.13.0
 numpy
 pillow
-h5py
-scipy
 gdown
+tensorflow==2.15.0
