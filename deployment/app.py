@@ -46,7 +46,7 @@ print("✅ Model loaded successfully")
 # -----------------------------
 # SETTINGS
 # -----------------------------
-IMG_SIZE = (150, 150)
+IMG_SIZE = (224, 224)
 labels = ["NORMAL", "PNEUMONIA"]
 
 # -----------------------------
