@@ -25,7 +25,10 @@ PORT = int(os.environ.get("PORT", 5000))
 # -----------------------------
 # MODEL CONFIG
 # -----------------------------
-FILE_ID = "1KffooXUkliBRSoOiog3PAA-WUtEOHqt2"  # ✅ YOUR CORRECT FILE ID
+
+FILE_ID = "12alTQNk1iEU5yBBNmCQWUY9h3etZR6gS"  # ✅ YOUR CORRECT FILE ID  
+
+
 BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 MODEL_PATH = os.path.join(BASE_DIR, "model", "best_model.h5")
 
