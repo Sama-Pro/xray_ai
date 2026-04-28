@@ -37,7 +37,7 @@ if not os.path.exists(MODEL_PATH):
     os.makedirs(os.path.dirname(MODEL_PATH), exist_ok=True)
 
     url = f"https://drive.google.com/uc?id={FILE_ID}"
-    gdown.download(url, MODEL_PATH, quiet=False, fuzzy=True)
+    gdown.download(url, MODEL_PATH, quiet=False)
 
 print("📦 Loading model...")
 model = tf.keras.models.load_model(MODEL_PATH, compile=False)
