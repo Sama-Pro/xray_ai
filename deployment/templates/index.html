@@ -1,27 +1,85 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>X-Ray AI Detector</title>
+
+    <!-- CSS -->
     <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
 </head>
 <body>
 
-<div class="container">
-    <h1>🩻 X-Ray Pneumonia Detector</h1>
+    <div class="container">
 
-    <input type="file" id="imageInput" accept="image/*">
-    <br><br>
+        <!-- Header -->
+        <h1>🩻 X-Ray Pneumonia Detector</h1>
 
-    <button onclick="predict()">Predict</button>
+        <!-- Upload Section -->
+        <div class="upload-section">
 
-    <h2 id="result"></h2>
-    <p id="confidence"></p>
+            <input 
+                type="file" 
+                id="imageInput" 
+                accept="image/*"
+            >
 
-    <img id="preview" />
-</div>
+            <br><br>
 
-<script src="{{ url_for('static', filename='script.js') }}"></script>
+            <button onclick="predict()">
+                Predict
+            </button>
+
+        </div>
+
+        <!-- Prediction Results -->
+        <div class="results-section">
+
+            <h2 id="result"></h2>
+
+            <p id="confidence"></p>
+
+            <p id="suggestion"></p>
+
+        </div>
+
+        <!-- Image Comparison Section -->
+        <div class="image-section">
+
+            <!-- Original X-Ray -->
+            <div class="image-box">
+
+                <h3>Original X-Ray</h3>
+
+                <img 
+                    id="preview"
+                    src=""
+                    alt="Uploaded X-Ray will appear here"
+                    width="300"
+                >
+
+            </div>
+
+            <!-- AI Heatmap -->
+            <div class="image-box">
+
+                <h3>AI Focus Heatmap</h3>
+
+                <img 
+                    id="gradcam"
+                    src=""
+                    alt="Grad-CAM heatmap will appear here"
+                    width="300"
+                >
+
+            </div>
+
+        </div>
+
+    </div>
+
+    <!-- JS -->
+    <script src="{{ url_for('static', filename='script.js') }}"></script>
+
 </body>
 </html>
-
-
