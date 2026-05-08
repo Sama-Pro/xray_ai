@@ -1,7 +1,31 @@
+# Virtual environment
 venv/
+
+# Python cache
 __pycache__/
+deployment/__pycache__/
 *.pyc
+
+# Dataset
 dataset/
+
+# Model files (root + deployment)
+model/
 model/*.h5
-test_model.py        
-train.py 
+deployment/model/
+
+# Uploaded/generated images
+deployment/static/uploads/
+
+# Training / experiments
+experiments/
+v8_class_weight_refine/
+train_transfer*.py
+test_model.py
+count_images.py
+version_log.py
+
+# Logs / misc
+*.log
+.DS_Store
+Thumbs.db
