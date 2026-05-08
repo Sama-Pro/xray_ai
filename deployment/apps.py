@@ -8,7 +8,7 @@ import gdown
 from tensorflow.keras.applications.mobilenet_v2 import preprocess_input
 
 # Grad-CAM
-from gradcam import make_gradcam_heatmap, save_gradcam
+from deployment.gradcam import make_gradcam_heatmap, save_gradcam
 
 # -----------------------------
 # APP CONFIG
