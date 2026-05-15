@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Dashboard</title>
+</head>
+<body>
+
+    <h1>🏥 Doctor Dashboard</h1>
+
+    <p>Welcome Dr. {{ session.username }}</p>
+
+    <hr>
+
+    <h2>📊 Hospital Statistics</h2>
+
+    <p><strong>Total Patients:</strong> {{ total_patients }}</p>
+    <p><strong>Total X-Ray Cases:</strong> {{ total_cases }}</p>
+    <p><strong>PNEUMONIA Cases:</strong> {{ pneumonia_cases }}</p>
+    <p><strong>NORMAL Cases:</strong> {{ normal_cases }}</p>
+
+    <hr>
+
+    <h2>🩻 Recent X-Ray Cases</h2>
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Case ID</th>
+            <th>Patient Name</th>
+            <th>Age</th>
+            <th>Gender</th>
+            <th>Prediction</th>
+            <th>Confidence</th>
+            <th>Date</th>
+        </tr>
+
+        {% for case, patient in recent_cases %}
+        <tr>
+            <td>{{ case.id }}</td>
+
+            <td>
+             <a href="/patient/{{ case.patient.id }}">
+               {{ case.patient.full_name }}
+              </a>
+            </td>
+
+            <td>{{ patient.age }}</td>
+            <td>{{ patient.gender }}</td>
+            <td>{{ case.prediction }}</td>
+            <td>{{ case.confidence }}%</td>
+            <td>{{ case.created_at }}</td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <hr>
+
+    <a href="/patient_form">
+        <button>Register New Patient</button>
+    </a>
+
+    <a href="/logout">
+        <button>Logout</button>
+    </a>
+
+</body>
+</html>

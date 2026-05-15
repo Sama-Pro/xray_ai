@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Patient Details</title>
+</head>
+<body>
+
+    <h1>🧑 Patient Details</h1>
+
+    <p><strong>Name:</strong> {{ patient.full_name }}</p>
+    <p><strong>Age:</strong> {{ patient.age }}</p>
+    <p><strong>Gender:</strong> {{ patient.gender }}</p>
+
+    <hr>
+
+    <h2>🩻 X-Ray History</h2>
+
+    <table border="1" cellpadding="10">
+        <tr>
+            <th>Case ID</th>
+            <th>Prediction</th>
+            <th>Confidence</th>
+            <th>Date</th>
+            <th>Image</th>
+        </tr>
+
+        {% for case in cases %}
+        <tr>
+            <td>{{ case.id }}</td>
+            <td>{{ case.prediction }}</td>
+            <td>{{ case.confidence }}%</td>
+            <td>{{ case.created_at }}</td>
+            <td>
+                <img src="{{ case.image_path.replace('\\', '/') }}" width="150">
+            </td>
+        </tr>
+        {% endfor %}
+
+    </table>
+
+    <br>
+
+    <a href="/dashboard">
+        <button>⬅ Back to Dashboard</button>
+    </a>
+
+</body>
+</html>
