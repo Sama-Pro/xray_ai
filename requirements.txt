@@ -1,4 +1,4 @@
-flask
+Flask
 flask-cors
 gunicorn
 numpy
@@ -7,7 +7,6 @@ gdown
 tensorflow==2.13.0
 opencv-python-headless
 matplotlib
-Flask
 Flask-SQLAlchemy
 Flask-Login
 PyMySQL
