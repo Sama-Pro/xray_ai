@@ -4,9 +4,10 @@ import cv2
 import matplotlib.cm as cm
 
 # -----------------------------
-# 1. GENERATE HEATMAP (With Threshold)
+# 1. GENERATE HEATMAP (SAFE)
 # -----------------------------
 def make_gradcam_heatmap(img_array, model, last_conv_layer_name):
+
     grad_model = tf.keras.models.Model(
         [model.inputs],
         [model.get_layer(last_conv_layer_name).output, model.output]
@@ -19,33 +20,45 @@ def make_gradcam_heatmap(img_array, model, last_conv_layer_name):
 
     grads = tape.gradient(loss, conv_outputs)
     pooled_grads = tf.reduce_mean(grads, axis=(0, 1, 2))
+
     conv_outputs = conv_outputs[0]
+
     heatmap = conv_outputs @ pooled_grads[..., tf.newaxis]
     heatmap = tf.squeeze(heatmap)
 
-    # Normalize and apply the professional 60% threshold
-    heatmap = tf.maximum(heatmap, 0) / tf.math.reduce_max(heatmap)
+    # Convert to numpy safely
     heatmap = heatmap.numpy()
-    heatmap[heatmap < 0.85] = 0 
+
+    # Remove invalid values
+    heatmap = np.nan_to_num(heatmap)
+
+    # Normalize (VERY IMPORTANT for Render stability)
+    heatmap = heatmap - np.min(heatmap)
+    heatmap = heatmap / (np.max(heatmap) + 1e-8)
 
     return heatmap
 
+
 # -----------------------------
-# 2. SAVE HEATMAP IMAGE (The missing function)
+# 2. SAVE HEATMAP IMAGE (SAFE)
 # -----------------------------
 def save_gradcam(img_path, heatmap, output_path, alpha=0.4):
+
     img = cv2.imread(img_path)
-    
-    # Resize heatmap to original image dimensions
+
+    if img is None:
+        raise ValueError(f"Image not found: {img_path}")
+
+    # Resize heatmap to image size
     heatmap = cv2.resize(heatmap, (img.shape[1], img.shape[0]))
-    
-    # Apply JET colormap
+
+    # Convert to colormap safely
     heatmap = np.uint8(255 * heatmap)
     heatmap = cm.jet(heatmap)[:, :, :3]
+
     heatmap = np.uint8(255 * heatmap)
 
-    # Superimpose heatmap onto the original X-ray
+    # Blend images
     superimposed_img = cv2.addWeighted(img, 1 - alpha, heatmap, alpha, 0)
 
-    # Save the result
     cv2.imwrite(output_path, superimposed_img)
