@@ -19,10 +19,19 @@ MODEL_PATH = os.path.join(
 )
 
 # Load model once
-model = tf.keras.models.load_model(
-    MODEL_PATH,
-    compile=False
-)
+
+model = None
+
+def get_model():
+    global model
+
+    if model is None:
+        model = tf.keras.models.load_model(
+            MODEL_PATH,
+            compile=False
+        )
+
+    return model
 
 
 def preprocess_image(image_path):
@@ -55,7 +64,8 @@ def run_xray_pipeline(image_path):
     img = preprocess_image(image_path)
 
     # 2. prediction
-    prob = model.predict(img)[0][0]
+
+    prob = get_model().predict(img)[0][0]
 
     # 3. threshold
     if prob > THRESHOLD:

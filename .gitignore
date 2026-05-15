@@ -10,9 +10,7 @@ deployment/__pycache__/
 dataset/
 
 # Model files (root + deployment)
-model/
-model/*.h5
-deployment/model/
+
 
 # Uploaded/generated images
 deployment/static/uploads/
