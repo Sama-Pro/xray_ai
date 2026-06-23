@@ -11,3 +11,4 @@ Flask-SQLAlchemy
 Flask-Login
 PyMySQL
 Werkzeug
+psycopg2-binary
