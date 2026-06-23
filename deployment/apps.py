@@ -317,7 +317,7 @@ def patient_form():
             image_path=web_image_path,
             prediction=prediction,
             confidence=confidence,
-            gradcam_path=web_gradcam_path
+            
         )
 
         db.session.add(new_case)
@@ -353,27 +353,11 @@ def predict():
 
         prediction, confidence = run_xray_pipeline(filepath)
 
-        img = Image.open(filepath).convert("RGB")
-        processed = preprocess_image(img)
-
-        heatmap = make_gradcam_heatmap(
-            processed,
-            get_model(),
-            "block_16_project"
-        )
-
-        gradcam_filename = f"gradcam_{filename}"
-        heatmap_path = os.path.join(upload_folder, gradcam_filename)
-
-        save_gradcam(filepath, heatmap, heatmap_path)
-
-        gradcam_web_path = "/static/uploads/" + gradcam_filename
-
         return jsonify({
             "prediction": prediction,
             "confidence": round(confidence, 2),
             "image": web_image_path,
-            "gradcam": gradcam_web_path
+        
         })
 
     except Exception as e:
