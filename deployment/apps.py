@@ -293,25 +293,6 @@ def patient_form():
         prediction, confidence = run_xray_pipeline(filepath)
 
         # -----------------------------
-        # GRAD-CAM
-        # -----------------------------
-        img = Image.open(filepath).convert("RGB")
-        processed = preprocess_image(img)
-
-        heatmap = make_gradcam_heatmap(
-            processed,
-            get_model(),
-            "block_16_project"
-        )
-
-        gradcam_filename = f"gradcam_{filename}"
-        gradcam_path = os.path.join(upload_folder, gradcam_filename)
-
-        save_gradcam(filepath, heatmap, gradcam_path)
-
-        web_gradcam_path = "/static/uploads/" + gradcam_filename
-
-        # -----------------------------
         # SAVE DB
         # -----------------------------
         new_case = XRayCase(
