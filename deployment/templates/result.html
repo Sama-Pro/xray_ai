@@ -1,0 +1,91 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>X-Ray Prediction Result</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            margin: 0;
+        }
+        nav {
+            background: white;
+            padding: 18px;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+        nav a, .button {
+            display: inline-block;
+            padding: 12px 18px;
+            background: #087fc1;
+            color: white;
+            text-decoration: none;
+            border-radius: 6px;
+        }
+        main {
+            max-width: 750px;
+            margin: 35px auto;
+            padding: 25px;
+            background: white;
+            border-radius: 12px;
+        }
+        .result {
+            padding: 18px;
+            background: #eaf3ff;
+            border-radius: 8px;
+        }
+        img {
+            display: block;
+            max-width: 100%;
+            max-height: 400px;
+            margin: 15px 0;
+            border-radius: 8px;
+        }
+        .actions {
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            margin-top: 24px;
+        }
+    </style>
+</head>
+<body>
+
+<nav>
+    <a href="/dashboard">Dashboard</a>
+    <a href="/patient_form">Register Patient & Predict</a>
+    <a href="/logout">Logout</a>
+</nav>
+
+<main>
+    <h1>🩻 X-Ray Prediction Result</h1>
+
+    <h2>Patient Information</h2>
+    <p><strong>Name:</strong> {{ patient.full_name }}</p>
+    <p><strong>Age:</strong> {{ patient.age }}</p>
+    <p><strong>Gender:</strong> {{ patient.gender }}</p>
+
+    <h2>AI Prediction</h2>
+    <div class="result">
+        <p><strong>Prediction:</strong> {{ case.prediction }}</p>
+        <p><strong>Confidence:</strong> {{ "%.2f"|format(case.confidence) }}%</p>
+        <p>This is an AI-generated result for project demonstration,
+           not a medical diagnosis.</p>
+    </div>
+
+    <h2>Uploaded Chest X-Ray</h2>
+    <img src="{{ case.image_path }}" alt="Uploaded chest X-ray">
+
+    <div class="actions">
+        <a class="button" href="/dashboard">Back to Dashboard</a>
+        <a class="button" href="/patient_form">Register Another Patient</a>
+    </div>
+</main>
+
+</body>
+</html>
