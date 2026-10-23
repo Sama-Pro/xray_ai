@@ -1,21 +1,157 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Login</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Doctor Login | Pneumonia Prediction</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 20px;
+        }
+
+        .login-card {
+            width: 100%;
+            max-width: 420px;
+            background: white;
+            padding: 35px;
+            border-radius: 14px;
+            box-shadow: 0 8px 25px rgba(0, 0, 0, 0.08);
+        }
+
+        .icon {
+            font-size: 42px;
+            text-align: center;
+        }
+
+        h1 {
+            text-align: center;
+            margin: 12px 0;
+            color: #12345a;
+        }
+
+        .subtitle {
+            text-align: center;
+            color: #64748b;
+            margin-bottom: 28px;
+            line-height: 1.5;
+        }
+
+        label {
+            display: block;
+            font-weight: bold;
+            margin: 16px 0 8px;
+        }
+
+        input {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 7px;
+            font-size: 16px;
+        }
+
+        input:focus {
+            outline: 2px solid #93c5fd;
+            border-color: #0284c7;
+        }
+
+        button {
+            width: 100%;
+            margin-top: 24px;
+            padding: 13px;
+            border: none;
+            border-radius: 7px;
+            background: #0284c7;
+            color: white;
+            font-size: 16px;
+            font-weight: bold;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0369a1;
+        }
+
+        .register-link {
+            text-align: center;
+            margin-top: 22px;
+        }
+
+        .register-link a {
+            color: #0284c7;
+            text-decoration: none;
+            font-weight: bold;
+        }
+
+        .notice {
+            background: #eff6ff;
+            color: #1d4ed8;
+            padding: 12px;
+            border-radius: 7px;
+            font-size: 13px;
+            line-height: 1.5;
+            margin-top: 20px;
+        }
+    </style>
 </head>
+
 <body>
+    <main class="login-card">
+        <div class="icon">🏥</div>
 
-    <h2>Doctor Login</h2>
+        <h1>Doctor Login</h1>
 
-    <form method="POST">
+        <p class="subtitle">
+            AI Assistance for Pneumonia Prediction
+        </p>
 
-        <input type="email" name="email" placeholder="Email" required><br><br>
+        <form action="/login" method="POST">
+            <label for="email">Email Address</label>
+            <input
+                type="email"
+                id="email"
+                name="email"
+                placeholder="Enter your email"
+                autocomplete="username"
+                required
+            >
 
-        <input type="password" name="password" placeholder="Password" required><br><br>
+            <label for="password">Password</label>
+            <input
+                type="password"
+                id="password"
+                name="password"
+                placeholder="Enter your password"
+                autocomplete="current-password"
+                required
+            >
 
-        <button type="submit">Login</button>
+            <button type="submit">Login</button>
+        </form>
 
-    </form>
+        <p class="register-link">
+            New doctor?
+            <a href="/register">Create an account</a>
+        </p>
 
+        <div class="notice">
+            AI predictions are intended for project demonstration
+            and are not a substitute for professional medical assessment.
+        </div>
+    </main>
 </body>
 </html>
