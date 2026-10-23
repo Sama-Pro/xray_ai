@@ -116,7 +116,9 @@ def preprocess_image(image):
 # -----------------------------
 @app.route("/")
 def home():
-    return render_template("index.html")
+    if "user_id" in session:
+        return redirect("/dashboard")
+    return redirect("/login")
 
 
 # -----------------------------
