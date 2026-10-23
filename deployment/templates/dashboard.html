@@ -1,69 +1,249 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Doctor Dashboard</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #12304a;
+            color: white;
+            padding: 22px 5%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        header p {
+            margin: 0;
+        }
+
+        nav {
+            background: white;
+            padding: 14px 5%;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 5px #00000010;
+        }
+
+        nav a {
+            text-decoration: none;
+            background: #e2e8f0;
+            color: #12304a;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background: #cbd5e1;
+        }
+
+        nav a.active {
+            background: #0284c7;
+            color: white;
+        }
+
+        main {
+            max-width: 1200px;
+            margin: 28px auto;
+            padding: 0 20px;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+            gap: 16px;
+            margin: 20px 0 30px;
+        }
+
+        .card {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            box-shadow: 0 2px 8px #0000000d;
+        }
+
+        .card h3 {
+            margin: 0 0 12px;
+            font-size: 15px;
+            color: #475569;
+        }
+
+        .number {
+            font-size: 30px;
+            font-weight: bold;
+            color: #0284c7;
+        }
+
+        .section {
+            background: white;
+            padding: 22px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+            white-space: nowrap;
+        }
+
+        th {
+            background: #eaf2f8;
+        }
+
+        tbody tr:hover {
+            background: #f8fafc;
+        }
+
+        .button {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #0369a1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h1>🏥 Doctor Dashboard</h1>
+<header>
+    <h1>🏥 AI Pneumonia Assistance System</h1>
+    <p>Doctor Dashboard | Welcome, Dr. {{ session.username }}</p>
+</header>
 
-    <p>Welcome Dr. {{ session.username }}</p>
-
-    <hr>
-
-    <h2>📊 Hospital Statistics</h2>
-
-    <p><strong>Total Patients:</strong> {{ total_patients }}</p>
-    <p><strong>Total X-Ray Cases:</strong> {{ total_cases }}</p>
-    <p><strong>PNEUMONIA Cases:</strong> {{ pneumonia_cases }}</p>
-    <p><strong>NORMAL Cases:</strong> {{ normal_cases }}</p>
-
-    <hr>
-
-    <h2>🩻 Recent X-Ray Cases</h2>
-
-    <table border="1" cellpadding="10">
-        <tr>
-            <th>Case ID</th>
-            <th>Patient Name</th>
-            <th>Age</th>
-            <th>Gender</th>
-            <th>Prediction</th>
-            <th>Confidence</th>
-            <th>Date</th>
-        </tr>
-
-        {% for case, patient in recent_cases %}
-        <tr>
-            <td>{{ case.id }}</td>
-
-            <td>
-             <a href="/patient/{{ case.patient.id }}">
-               {{ case.patient.full_name }}
-              </a>
-            </td>
-
-            <td>{{ patient.age }}</td>
-            <td>{{ patient.gender }}</td>
-            <td>{{ case.prediction }}</td>
-            <td>{{ case.confidence }}%</td>
-            <td>{{ case.created_at }}</td>
-        </tr>
-        {% endfor %}
-
-    </table>
-
-    <hr>
-
-    <a href="/patient_form">
-        <button>Register New Patient</button>
+<nav>
+    <a href="{{ url_for('dashboard') }}" class="active">
+        Dashboard
     </a>
 
-    <a href="/logout">
-        <button>Logout</button>
+    <a href="{{ url_for('patient_form') }}">
+        Register Patient & Predict
     </a>
+
+    <a href="{{ url_for('logout') }}">
+        Logout
+    </a>
+</nav>
+
+<main>
+
+    <h2>Hospital Statistics</h2>
+
+    <div class="cards">
+
+        <div class="card">
+            <h3>Total Patients</h3>
+            <div class="number">{{ total_patients }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Total X-Ray Cases</h3>
+            <div class="number">{{ total_cases }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Pneumonia Cases</h3>
+            <div class="number">{{ pneumonia_cases }}</div>
+        </div>
+
+        <div class="card">
+            <h3>Normal Cases</h3>
+            <div class="number">{{ normal_cases }}</div>
+        </div>
+
+    </div>
+
+    <section class="section">
+        <h2>🩻 Recent X-Ray Cases</h2>
+
+        <table>
+            <thead>
+                <tr>
+                    <th>Case ID</th>
+                    <th>Patient Name</th>
+                    <th>Age</th>
+                    <th>Gender</th>
+                    <th>Prediction</th>
+                    <th>Confidence</th>
+                    <th>Date</th>
+                </tr>
+            </thead>
+
+            <tbody>
+                {% for case, patient in recent_cases %}
+                <tr>
+                    <td>{{ case.id }}</td>
+
+                    <td>
+                        <a href="{{ url_for('patient_details',
+                                             patient_id=patient.id) }}">
+                            {{ patient.full_name }}
+                        </a>
+                    </td>
+
+                    <td>{{ patient.age }}</td>
+                    <td>{{ patient.gender }}</td>
+                    <td>{{ case.prediction }}</td>
+                    <td>{{ case.confidence }}%</td>
+                    <td>{{ case.created_at }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="7">No X-ray cases recorded yet.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </section>
+
+    <a class="button" href="{{ url_for('patient_form') }}">
+        + Register New Patient & Predict
+    </a>
+
+</main>
+
+<footer>
+    AI Assistance for Pneumonia Prediction — Minor Project
+</footer>
 
 </body>
 </html>
