@@ -1,29 +1,220 @@
+
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-    <title>Patient Registration</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <title>Register Patient & Predict</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #12304a;
+            color: white;
+            padding: 22px 5%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        nav {
+            background: white;
+            padding: 14px 5%;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 5px #00000010;
+        }
+
+        nav a {
+            text-decoration: none;
+            background: #e2e8f0;
+            color: #12304a;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background: #cbd5e1;
+        }
+
+        main {
+            max-width: 720px;
+            margin: 32px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 28px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px #0000000d;
+        }
+
+        .intro {
+            color: #64748b;
+            line-height: 1.6;
+        }
+
+        label {
+            display: block;
+            margin: 18px 0 8px;
+            font-weight: bold;
+        }
+
+        input, select {
+            display: block;
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 6px;
+            font-size: 15px;
+            background: white;
+        }
+
+        input[type="file"] {
+            background: #f8fafc;
+        }
+
+        .button {
+            display: inline-block;
+            border: none;
+            background: #0284c7;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-size: 15px;
+            font-weight: bold;
+            cursor: pointer;
+            margin-top: 22px;
+        }
+
+        .button:hover {
+            background: #0369a1;
+        }
+
+        .secondary {
+            background: #e2e8f0;
+            color: #12304a;
+            margin-left: 8px;
+        }
+
+        .secondary:hover {
+            background: #cbd5e1;
+        }
+
+        .notice {
+            margin-top: 18px;
+            padding: 12px;
+            background: #eff6ff;
+            border-radius: 6px;
+            color: #1e40af;
+            font-size: 14px;
+            line-height: 1.5;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+    </style>
 </head>
+
 <body>
 
-    <h2>Register New Patient</h2>
+<header>
+    <h1>🩻 AI Pneumonia Assistance System</h1>
+    <p>Patient Registration and X-Ray Prediction</p>
+</header>
 
-    <form action="/patient_form" method="POST" enctype="multipart/form-data">
+<nav>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('patient_form') }}">Register Patient & Predict</a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</nav>
 
-        <input type="text" name="full_name" placeholder="Full Name" required><br><br>
+<main>
+    <section class="card">
+        <h2>Register New Patient</h2>
 
-        <input type="number" name="age" placeholder="Age" required><br><br>
+        <p class="intro">
+            Enter the patient's details and upload a chest X-ray
+            for the AI prediction process.
+        </p>
 
-        <select name="gender" required>
-            <option value="">Select Gender</option>
-            <option value="Male">Male</option>
-            <option value="Female">Female</option>
-        </select><br><br>
+        <form action="{{ url_for('patient_form') }}"
+              method="POST"
+              enctype="multipart/form-data">
 
-        <input type="file" name="image" accept="image/*" required><br><br>
+            <label for="full_name">Full Name</label>
+            <input
+                type="text"
+                id="full_name"
+                name="full_name"
+                placeholder="Enter patient's full name"
+                required>
 
-        <button type="submit">Submit Patient</button>
+            <label for="age">Age</label>
+            <input
+                type="number"
+                id="age"
+                name="age"
+                placeholder="Enter age"
+                min="1"
+                max="120"
+                required>
 
-    </form>
+            <label for="gender">Gender</label>
+            <select id="gender" name="gender" required>
+                <option value="">Select Gender</option>
+                <option value="Male">Male</option>
+                <option value="Female">Female</option>
+            </select>
+
+            <label for="image">Chest X-Ray Image</label>
+            <input
+                type="file"
+                id="image"
+                name="image"
+                accept="image/jpeg,image/png,image/webp"
+                required>
+
+            <div class="notice">
+                This application provides AI-generated predictions
+                for project demonstration. Results are not a substitute
+                for assessment by a qualified healthcare professional.
+            </div>
+
+            <button class="button" type="submit">
+                Submit Patient & Predict
+            </button>
+
+            <a class="button secondary"
+               href="{{ url_for('dashboard') }}">
+                Cancel
+            </a>
+        </form>
+    </section>
+</main>
+
+<footer>
+    AI Assistance for Pneumonia Prediction — Minor Project
+</footer>
 
 </body>
 </html>
