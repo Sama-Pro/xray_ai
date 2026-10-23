@@ -1,50 +1,229 @@
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
     <title>Patient Details</title>
+
+    <style>
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: Arial, sans-serif;
+            background: #f1f5f9;
+            color: #1e293b;
+        }
+
+        header {
+            background: #12304a;
+            color: white;
+            padding: 22px 5%;
+        }
+
+        header h1 {
+            margin: 0 0 8px;
+        }
+
+        nav {
+            background: white;
+            padding: 14px 5%;
+            display: flex;
+            gap: 12px;
+            flex-wrap: wrap;
+            box-shadow: 0 2px 5px #00000010;
+        }
+
+        nav a {
+            text-decoration: none;
+            background: #e2e8f0;
+            color: #12304a;
+            padding: 10px 16px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        nav a:hover {
+            background: #cbd5e1;
+        }
+
+        main {
+            max-width: 1100px;
+            margin: 28px auto;
+            padding: 0 20px;
+        }
+
+        .card {
+            background: white;
+            padding: 24px;
+            border-radius: 10px;
+            margin-bottom: 24px;
+            box-shadow: 0 2px 8px #0000000d;
+        }
+
+        .patient-info {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 16px;
+        }
+
+        .info-item {
+            background: #f1f5f9;
+            padding: 16px;
+            border-radius: 8px;
+        }
+
+        .info-item strong {
+            display: block;
+            margin-bottom: 8px;
+            color: #475569;
+        }
+
+        .table-wrapper {
+            overflow-x: auto;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 16px;
+        }
+
+        th, td {
+            padding: 12px;
+            border-bottom: 1px solid #e2e8f0;
+            text-align: left;
+        }
+
+        th {
+            background: #eaf2f8;
+        }
+
+        .xray {
+            width: 150px;
+            max-width: 100%;
+            height: auto;
+            border-radius: 6px;
+        }
+
+        .button {
+            display: inline-block;
+            background: #0284c7;
+            color: white;
+            text-decoration: none;
+            padding: 12px 18px;
+            border-radius: 6px;
+            font-weight: bold;
+        }
+
+        .button:hover {
+            background: #0369a1;
+        }
+
+        footer {
+            text-align: center;
+            padding: 20px;
+            color: #64748b;
+        }
+    </style>
 </head>
+
 <body>
 
+<header>
     <h1>🧑 Patient Details</h1>
+    <p>AI Assistance for Pneumonia Prediction</p>
+</header>
 
-    <p><strong>Name:</strong> {{ patient.full_name }}</p>
-    <p><strong>Age:</strong> {{ patient.age }}</p>
-    <p><strong>Gender:</strong> {{ patient.gender }}</p>
-
-    <hr>
-
-    <h2>🩻 X-Ray History</h2>
-
-    <table border="1" cellpadding="10">
-        <tr>
-            <th>Case ID</th>
-            <th>Prediction</th>
-            <th>Confidence</th>
-            <th>Date</th>
-            <th>Image</th>
-        </tr>
-
-        {% for case in cases %}
-        <tr>
-            <td>{{ case.id }}</td>
-            <td>{{ case.prediction }}</td>
-            <td>{{ case.confidence }}%</td>
-            <td>{{ case.created_at }}</td>
-            <td>
-                <img src="{{ case.image_path.replace('\\', '/') }}" width="150">
-            </td>
-        </tr>
-        {% endfor %}
-
-    </table>
-
-    <br>
-
-    <a href="/dashboard">
-        <button>⬅ Back to Dashboard</button>
+<nav>
+    <a href="{{ url_for('dashboard') }}">Dashboard</a>
+    <a href="{{ url_for('patient_form') }}">
+        Register Patient & Predict
     </a>
+    <a href="{{ url_for('logout') }}">Logout</a>
+</nav>
+
+<main>
+
+    <section class="card">
+        <h2>Patient Information</h2>
+
+        <div class="patient-info">
+            <div class="info-item">
+                <strong>Full Name</strong>
+                {{ patient.full_name }}
+            </div>
+
+            <div class="info-item">
+                <strong>Age</strong>
+                {{ patient.age }}
+            </div>
+
+            <div class="info-item">
+                <strong>Gender</strong>
+                {{ patient.gender }}
+            </div>
+        </div>
+    </section>
+
+    <section class="card">
+        <h2>🩻 X-Ray History</h2>
+
+        <div class="table-wrapper">
+            <table>
+                <thead>
+                    <tr>
+                        <th>Case ID</th>
+                        <th>Prediction</th>
+                        <th>Confidence</th>
+                        <th>Date</th>
+                        <th>X-Ray Image</th>
+                    </tr>
+                </thead>
+
+                <tbody>
+                    {% for case in cases %}
+                    <tr>
+                        <td>{{ case.id }}</td>
+                        <td>{{ case.prediction }}</td>
+                        <td>{{ case.confidence }}%</td>
+                        <td>{{ case.created_at }}</td>
+                        <td>
+                            <a href="{{ case.image_path }}"
+                               target="_blank"
+                               rel="noopener noreferrer">
+                                <img
+                                    class="xray"
+                                    src="{{ case.image_path }}"
+                                    alt="Chest X-ray for case {{ case.id }}">
+                            </a>
+                        </td>
+                    </tr>
+                    {% else %}
+                    <tr>
+                        <td colspan="5">
+                            No X-ray history is available for this patient.
+                        </td>
+                    </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+    <a class="button" href="{{ url_for('dashboard') }}">
+        ← Back to Dashboard
+    </a>
+
+</main>
+
+<footer>
+    AI Assistance for Pneumonia Prediction — Minor Project
+</footer>
 
 </body>
 </html>
