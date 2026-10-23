@@ -306,7 +306,11 @@ def patient_form():
         db.session.add(new_case)
         db.session.commit()
 
-        return "Patient registered successfully"
+        return render_template(
+            "result.html",
+            patient=new_patient,
+            case=new_case
+        )
 
     return render_template("patient_form.html")
 
